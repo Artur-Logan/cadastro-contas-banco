@@ -23,7 +23,6 @@ public class ContaService {
 
         Conta conta = mapperConta.toModel(contaRequest);
         conta.setDataCadastro(LocalDate.now());
-
         contaRepository.save(conta);
 
         return mapperConta.toResponse(conta);
