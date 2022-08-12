@@ -1,13 +1,12 @@
 package com.artur.cadastrobanco.service;
 
+import com.artur.cadastrobanco.dto.requests.ContaRequest;
+import com.artur.cadastrobanco.dto.responses.ContaResponse;
 import com.artur.cadastrobanco.entities.Conta;
-import com.artur.cadastrobanco.exceptions.SaldoInsuficienteException;
 import com.artur.cadastrobanco.mappers.MapperConta;
 import com.artur.cadastrobanco.repositories.ContaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.artur.cadastrobanco.dto.requests.ContaRequest;
-import com.artur.cadastrobanco.dto.responses.ContaResponse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,11 +24,6 @@ public class ContaService {
         Conta conta = mapperConta.toModel(contaRequest);
         conta.setDataCadastro(LocalDate.now());
 
-        while (conta.getChequeEspecial() == false) {
-            if (conta.getSaldo() < 0.0){
-                throw new SaldoInsuficienteException("Saldo Insuficiente!");
-            }
-        }
         contaRepository.save(conta);
 
         return mapperConta.toResponse(conta);
