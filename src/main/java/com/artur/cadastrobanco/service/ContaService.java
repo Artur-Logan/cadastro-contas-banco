@@ -3,6 +3,7 @@ package com.artur.cadastrobanco.service;
 import com.artur.cadastrobanco.dto.requests.ContaRequest;
 import com.artur.cadastrobanco.dto.responses.ContaResponse;
 import com.artur.cadastrobanco.entities.Conta;
+import com.artur.cadastrobanco.exceptions.ContaNotFoundException;
 import com.artur.cadastrobanco.mappers.MapperConta;
 import com.artur.cadastrobanco.repositories.ContaRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ public class ContaService {
     }
 
     public ContaResponse obter(Long id){
-        Conta conta = contaRepository.findById(id).get();
+        Conta conta = contaRepository.findById(id)
+                .orElseThrow(() -> new ContaNotFoundException("Não foi encontrado a Conta com o Id: " + id));
 
         return mapperConta.toResponse(conta);
     }
