@@ -24,7 +24,7 @@ public class ContaService {
 
         Conta conta = mapperConta.toModel(contaRequest);
         conta.setDataCadastro(LocalDate.now());
-        contaRepository.save(conta);
+        conta = contaRepository.save(conta);
 
         return mapperConta.toResponse(conta);
     }
@@ -37,7 +37,7 @@ public class ContaService {
     }
 
     public void deletar(Long id){
-        Conta conta = contaRepository.findById(id).get();
+        Conta conta = contaRepository.findById(id).orElseThrow(() -> new ContaNotFoundException("Não foi encontrado a Conta com o Id: " + id));
 
         contaRepository.delete(conta);
 
